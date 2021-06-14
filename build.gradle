@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.847'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
