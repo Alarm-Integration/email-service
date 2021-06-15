@@ -1,0 +1,5 @@
+aws:
+  ses:
+    credentials:
+      access-key: AKIAYVRYD5CWBAESNBHL
+      secret-key: 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
