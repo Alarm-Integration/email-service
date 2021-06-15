@@ -6,10 +6,12 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class SendEmailRequest {
     private String from;
     private List<String> to;
