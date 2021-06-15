@@ -43,7 +43,7 @@ class AmazonEmailServiceTest {
                 .message("123")
                 .build();
 
-        given(amazonSimpleEmailService.sendEmail(request.toSendRequestDto())).willReturn(new SendEmailResult().withMessageId("12323834"));
+        given(amazonSimpleEmailService.sendEmail(request.toSendRequestDto())).willReturn(new SendEmailResult().withMessageId("123"));
 
         //when
         SendEmailResponse result = amazonEmailService.sendEmail(request);
