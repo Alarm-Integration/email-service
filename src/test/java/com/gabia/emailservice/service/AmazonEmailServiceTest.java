@@ -6,6 +6,7 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityRequest;
 import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityResult;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.dto.response.SendEmailResponse;
+import com.gabia.emailservice.sender.AmazonEmailSender;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class AmazonEmailServiceTest {
     private AmazonSimpleEmailService amazonSimpleEmailService;
 
     @InjectMocks
-    private AmazonEmailService amazonEmailService;
+    private AmazonEmailSender amazonEmailService;
 
     @DisplayName("AWS SES email 전송 테스트")
     @Test
@@ -42,10 +43,10 @@ class AmazonEmailServiceTest {
                 .message("123")
                 .build();
 
-        given(amazonSimpleEmailService.sendEmail(request.toSendRequestDto())).willReturn(new SendEmailResult().withMessageId("123"));
+        given(amazonSimpleEmailService.sendEmail(request.toSendRequestDto())).willReturn(new SendEmailResult().withMessageId("12323834"));
 
         //when
-        SendEmailResponse result = amazonEmailService.send(request);
+        SendEmailResponse result = amazonEmailService.sendEmail(request);
 
         //then
         assertThat(result.getMessage()).isEqualTo(response.getMessage());

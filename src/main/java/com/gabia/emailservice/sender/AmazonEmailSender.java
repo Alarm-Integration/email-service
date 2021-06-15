@@ -1,4 +1,4 @@
-package com.gabia.emailservice.service;
+package com.gabia.emailservice.sender;
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.SendEmailResult;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AmazonEmailService {
+public class AmazonEmailSender implements CommonEmailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
 
-
-    public SendEmailResponse send(SendEmailRequest request) {
+    @Override
+    public SendEmailResponse sendEmail(SendEmailRequest request) {
         SendEmailResult sendEmailResult = amazonSimpleEmailService.sendEmail(request.toSendRequestDto());
 
         return SendEmailResponse.builder()
@@ -26,6 +26,7 @@ public class AmazonEmailService {
                 .build();
     }
 
+    @Override
     public SendEmailResponse sendVerifyEmail(String emailAddress) {
         VerifyEmailIdentityRequest request = new VerifyEmailIdentityRequest().withEmailAddress(emailAddress);
         VerifyEmailIdentityResult verifyEmailIdentityResult = amazonSimpleEmailService.verifyEmailIdentity(request);
