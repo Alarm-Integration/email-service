@@ -6,7 +6,7 @@ eureka:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://discovery-service:8761/eureka/
 server:
   port: 8080
 aws:
@@ -16,4 +16,4 @@ aws:
       secret-key: qqlwMehi5nW1ztgX7UfP5JdXYyPyEIPFRB8JzKnM
 kafka:
   bootstrap:
-    servers: ai-distribution-kafka
+    servers: http://ai-distribution-kafka:9092
