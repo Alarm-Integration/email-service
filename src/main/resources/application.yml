@@ -14,3 +14,6 @@ aws:
     credentials:
       access-key: AKIAYVRYD5CWBAESNBHL
       secret-key: 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
+kafka:
+  bootstrap:
+    servers: 127.0.0.1:9092

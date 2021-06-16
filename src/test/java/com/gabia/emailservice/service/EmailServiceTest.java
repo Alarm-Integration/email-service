@@ -28,9 +28,9 @@ class EmailServiceTest {
     void send_email(){
         //given
         SendEmailRequest request = SendEmailRequest.builder()
-                .from("nameks17@gmail.com")
-                .to(Lists.newArrayList("nameks@naver.com"))
-                .subject("테스트")
+                .sender("nameks17@gmail.com")
+                .raws(Lists.newArrayList("nameks@naver.com"))
+                .title("테스트")
                 .content("안녕하세요")
                 .build();
 
