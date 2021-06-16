@@ -1,4 +1,4 @@
-package com.gabia.emailservice.service;
+package com.gabia.emailservice.sender;
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.SendEmailResult;
@@ -6,7 +6,6 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityRequest;
 import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityResult;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.dto.response.SendEmailResponse;
-import com.gabia.emailservice.sender.AmazonEmailSender;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,22 +19,22 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class AmazonEmailServiceTest {
+class AmazonEmailSenderTest {
 
     @Mock
     private AmazonSimpleEmailService amazonSimpleEmailService;
 
     @InjectMocks
-    private AmazonEmailSender amazonEmailService;
+    private AmazonEmailSender amazonEmailSender;
 
     @DisplayName("AWS SES email 전송 테스트")
     @Test
     void send_email(){
         //given
         SendEmailRequest request = SendEmailRequest.builder()
-                .from("nameks17@gmail.com")
-                .to(Lists.newArrayList("nameks@naver.com"))
-                .subject("테스트")
+                .sender("nameks17@gmail.com")
+                .raws(Lists.newArrayList("nameks@naver.com"))
+                .title("테스트")
                 .content("안녕하세요")
                 .build();
 
@@ -46,7 +45,7 @@ class AmazonEmailServiceTest {
         given(amazonSimpleEmailService.sendEmail(request.toSendRequestDto())).willReturn(new SendEmailResult().withMessageId("123"));
 
         //when
-        SendEmailResponse result = amazonEmailService.sendEmail(request);
+        SendEmailResponse result = amazonEmailSender.sendEmail(request);
 
         //then
         assertThat(result.getMessage()).isEqualTo(response.getMessage());
@@ -68,7 +67,7 @@ class AmazonEmailServiceTest {
                 .build();
 
         //when
-        SendEmailResponse result = amazonEmailService.sendVerifyEmail(emailAddress);
+        SendEmailResponse result = amazonEmailSender.sendVerifyEmail(emailAddress);
 
         //then
         assertThat(result.getMessage()).isEqualTo(response.getMessage());
