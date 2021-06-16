@@ -1,3 +1,14 @@
+spring:
+  application:
+    name: email-service
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 0
 aws:
   ses:
     credentials:
