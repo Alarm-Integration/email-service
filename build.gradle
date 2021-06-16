@@ -19,8 +19,20 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2020.0.3")
+}
+
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //ASW SES SDK
     compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.847'
+
+    // Kafka, deserialize
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.4'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
 
@@ -64,5 +76,11 @@ jacocoTestCoverageVerification {
 
             excludes = []
         }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
