@@ -13,7 +13,7 @@ build:
   stage: build
   script:
     - docker login -u $DOCKER_HUB_ID -p $DOCKER_HUB_PASSWORD
-    - docker build -t $IMAGE_NAME .
+    - docker build -t $IMAGE_NAME:$ENVIROMENT .
     - docker push $IMAGE_NAME:$ENVIROMENT
   environment:
     name: $ENVIROMENT
