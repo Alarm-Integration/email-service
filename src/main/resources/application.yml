@@ -1,6 +1,9 @@
 spring:
   application:
     name: email-service
+  kafka:
+    consumer:
+      bootstrap-servers: 139.150.75.240:9092
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
@@ -16,6 +19,3 @@ aws:
     credentials:
       access-key: AKIAYVRYD5CWBAESNBHL
       secret-key: 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
-kafka:
-  bootstrap:
-    servers: 139.150.75.240:9092
