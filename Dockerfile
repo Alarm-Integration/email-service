@@ -1,4 +1,4 @@
-FROM openjdk:11 as build
+FROM openjdk:11-jdk-alpine as build
 WORKDIR /workspace/app
 COPY gradlew .
 COPY gradle gradle
@@ -9,7 +9,7 @@ RUN chmod +x gradlew
 RUN ./gradlew build
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*-SNAPSHOT.jar)
 
-FROM openjdk:11
+FROM openjdk:11-jre-slim
 ARG DEPENDENCY=/workspace/app/build/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
