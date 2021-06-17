@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-alpine as build
+FROM openjdk:11 as build
 WORKDIR /workspace/app
 COPY gradlew .
 COPY gradle gradle
