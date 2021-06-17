@@ -16,4 +16,4 @@ aws:
       secret-key: qqlwMehi5nW1ztgX7UfP5JdXYyPyEIPFRB8JzKnM
 kafka:
   bootstrap:
-    servers: http://ai-distribution-kafka:9092
+    servers: kafka:9092
