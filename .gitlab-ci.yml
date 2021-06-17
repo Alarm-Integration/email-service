@@ -25,7 +25,7 @@ deploy:
     - apk add sshpass
     - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no $USER_ID@$STAGING_SERVER docker pull $DOCKER_HUB_ID/$IMAGE_NAME
     - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no $USER_ID@$STAGING_SERVER "docker stop $CONTAINER_NAME || true"
-    - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no $USER_ID@$STAGING_SERVER docker run --rm -d -p 80:8080 --name $CONTAINER_NAME $DOCKER_HUB_ID/$IMAGE_NAME
+    - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no $USER_ID@$STAGING_SERVER docker run --rm -d -p 80:8080 --net test-network --name $CONTAINER_NAME $DOCKER_HUB_ID/$IMAGE_NAME
   environment:
     name: $ENVIROMENT
     url: $STAGING_SERVER
