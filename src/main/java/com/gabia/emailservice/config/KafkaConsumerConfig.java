@@ -23,7 +23,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${spring.kafka.consumer.bootstrap-servers}")
+    @Value("${kafka.bootstrap.servers}")
     private String kafkaServer;
 
     @Bean
@@ -39,7 +39,7 @@ public class KafkaConsumerConfig {
         return new StringJsonMessageConverter();
     }
 
-    private ConsumerFactory<String, SendEmailRequest> emailConsumer() {
+    public ConsumerFactory<String, SendEmailRequest> emailConsumer() {
         Map<String, Object> config = new HashMap<>();
         log.info("kafkaServer : {}", kafkaServer);
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
