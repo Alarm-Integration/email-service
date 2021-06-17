@@ -5,8 +5,10 @@ eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
-    serviceUrl:
-      defaultZone: http://discovery-service:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+#    serviceUrl:
+#      defaultZone: http://discovery-service:8761/eureka/
 server:
   port: 8080
 aws:
@@ -16,4 +18,4 @@ aws:
       secret-key: qqlwMehi5nW1ztgX7UfP5JdXYyPyEIPFRB8JzKnM
 kafka:
   bootstrap:
-    servers: 139.150.75.239:9092
+    servers: 139.150.75.240:9092
