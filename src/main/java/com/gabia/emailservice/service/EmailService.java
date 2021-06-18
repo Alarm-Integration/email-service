@@ -13,7 +13,7 @@ public class EmailService {
 
     private final CommonEmailSender commonEmailSender;
 
-    @KafkaListener(topics = "email", groupId = "email")
+    @KafkaListener(topics = "email", groupId = "email", containerFactory = "userListener")
     public SendEmailResponse sendEmail(SendEmailRequest sendEmailRequest) {
         return commonEmailSender.sendEmail(sendEmailRequest);
     }
