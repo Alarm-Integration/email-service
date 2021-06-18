@@ -1,6 +1,7 @@
 package com.gabia.emailservice.config;
 
 import com.gabia.emailservice.dto.request.SendEmailRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -17,6 +18,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
@@ -37,9 +39,9 @@ public class KafkaConsumerConfig {
         return new StringJsonMessageConverter();
     }
 
-    private ConsumerFactory<String, SendEmailRequest> emailConsumer() {
+    public ConsumerFactory<String, SendEmailRequest> emailConsumer() {
         Map<String, Object> config = new HashMap<>();
-
+        log.info("kafkaServer : {}", kafkaServer);
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
