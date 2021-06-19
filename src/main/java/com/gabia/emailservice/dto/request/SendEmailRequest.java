@@ -8,8 +8,11 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
+
+@Setter
+@Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class SendEmailRequest {
     private String sender;
     private List<String> raws;

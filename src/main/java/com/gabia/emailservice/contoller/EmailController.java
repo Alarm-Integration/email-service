@@ -7,6 +7,7 @@ import com.gabia.emailservice.dto.response.SendEmailResponse;
 import com.gabia.emailservice.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +25,9 @@ public class EmailController {
         return ResponseEntity.ok(APIResponse.withMessage(response.getMessage()));
     }
 
-    @PostMapping("/verify-email")
-    public ResponseEntity<?> sendVerifyEmail(@RequestBody SendVerifyEmailRequest request){
-        SendEmailResponse response = emailService.sendVerifyEmail(request.getEmailAddress());
+    @PostMapping("/verify-email/{email}")
+    public ResponseEntity<?> sendVerifyEmail(@PathVariable String email){
+        SendEmailResponse response = emailService.sendVerifyEmail(email);
 
         return ResponseEntity.ok(APIResponse.withMessage(response.getMessage()));
     }
