@@ -1,0 +1,37 @@
+image: docker:19.03.12
+
+stages:
+  - build
+  - deploy
+
+variables:
+  CONTAINER_NAME: email-service
+  ENVIROMENT: staging
+
+build-test:
+  image: gradle:6.9.0-jdk11
+  stage: build
+  script:
+    - gradle build
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+build-docker-image:
+  stage: build
+  script:
+    - docker login -u $DOCKER_HUB_ID -p $DOCKER_HUB_PASSWORD
+    - docker build -t $DOCKER_HUB_ID/$IMAGE_NAME .
+    - docker push $DOCKER_HUB_ID/$IMAGE_NAME
+  environment:
+    name: $ENVIROMENT
+
+deploy-container:
+  stage: deploy
+  script:
+    - docker pull $DOCKER_HUB_ID/$IMAGE_NAME
+    - docker stop $CONTAINER_NAME || true
+    - docker run --rm -d -p 8080:8080 --network ai-network --name $CONTAINER_NAME $DOCKER_HUB_ID/$IMAGE_NAME
+  environment:
+    name: $ENVIROMENT
+    url: $STAGING_SERVER
