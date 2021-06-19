@@ -1,0 +1,11 @@
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+kafka:
+  bootstrap:
+    servers: localhost:9092
+
+server:
+  port: 8080
