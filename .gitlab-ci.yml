@@ -30,8 +30,8 @@ deploy-container:
   stage: deploy
   script:
     - docker pull $DOCKER_HUB_ID/$IMAGE_NAME
-    - docker stop $CONTAINER_NAME || true
-    - "docker run --rm -d -p 8080:8080 \
+    - docker stop $CONTAINER_NAME || docker rm $CONTAINER_NAME || true
+    - "docker run -d -p 8080:8080 \
     --network ai-network \
     --name $CONTAINER_NAME \
     -e spring.profiles.active=$ENVIRONMENT \
