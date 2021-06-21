@@ -18,4 +18,4 @@ aws:
       secret-key: qqlwMehi5nW1ztgX7UfP5JdXYyPyEIPFRB8JzKnM
 kafka:
   bootstrap:
-    servers: "http://${KAFKA_SERVER}/eureka/"
+    servers: "${KAFKA_SERVER}"
