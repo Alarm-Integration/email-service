@@ -3,9 +3,8 @@ spring:
     name: email-service
 eureka:
   instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true
-    hostname: 139.150.75.238:8080
+    ip-address: "${HOST}"
   client:
     serviceUrl:
       defaultZone: http://139.150.75.239:8761/eureka/
