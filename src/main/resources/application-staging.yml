@@ -8,7 +8,7 @@ eureka:
     non-secure-port: 8080
   client:
     serviceUrl:
-      defaultZone: http://139.150.75.239:8761/eureka/
+      defaultZone: "http://${EUREKA_SERVER}/eureka/"
 server:
   port: 8080
 aws:
@@ -18,4 +18,4 @@ aws:
       secret-key: qqlwMehi5nW1ztgX7UfP5JdXYyPyEIPFRB8JzKnM
 kafka:
   bootstrap:
-    servers: 139.150.75.240:9092
+    servers: "http://${KAFKA_SERVER}/eureka/"
