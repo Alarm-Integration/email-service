@@ -5,6 +5,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: "${HOST}"
+    non-secure-port: 8080
   client:
     serviceUrl:
       defaultZone: http://139.150.75.239:8761/eureka/

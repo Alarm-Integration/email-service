@@ -7,7 +7,7 @@ stages:
 variables:
   CONTAINER_NAME: email-service
   ENVIROMENT: staging
-  HOST: 139.150.75.238:8080
+  HOST: 139.150.75.238
 
 build-test:
   image: gradle:6.9.0-jdk11
