@@ -7,6 +7,7 @@ stages:
 variables:
   CONTAINER_NAME: email-service
   ENVIROMENT: staging
+  HOST: 139.150.75.238:8080
 
 build-test:
   image: gradle:6.9.0-jdk11
@@ -31,7 +32,7 @@ deploy-container:
   script:
     - docker pull $DOCKER_HUB_ID/$IMAGE_NAME
     - docker stop $CONTAINER_NAME || true
-    - docker run --rm -d -p 8080:8080 --network ai-network --name $CONTAINER_NAME -e spring.profiles.active=$ENVIROMENT $DOCKER_HUB_ID/$IMAGE_NAME
+    - docker run --rm -d -p 8080:8080 --network ai-network --name $CONTAINER_NAME -e spring.profiles.active=$ENVIROMENT -e HOST=$HOST $DOCKER_HUB_ID/$IMAGE_NAME
   environment:
     name: $ENVIROMENT
     url: $STAGING_SERVER
