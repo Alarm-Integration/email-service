@@ -4,7 +4,6 @@ import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.dto.response.SendEmailResponse;
 import com.gabia.emailservice.sender.CommonEmailSender;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +22,8 @@ class EmailServiceTest {
     @InjectMocks
     private EmailService emailService;
 
-    @DisplayName("email 전송 테스트")
     @Test
-    void send_email(){
+    void 메일_발송_성공() {
         //given
         SendEmailRequest request = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
@@ -47,9 +45,8 @@ class EmailServiceTest {
         assertThat(result.getMessage()).isEqualTo(response.getMessage());
     }
 
-    @DisplayName("인증 이메일 전송 테스트")
     @Test
-    void sendVerifyEmail() {
+    void 인증_메일_발송_성공() {
         //given
         String emailAddress = "nameks@naver.com";
 

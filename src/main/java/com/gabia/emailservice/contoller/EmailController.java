@@ -1,7 +1,6 @@
 package com.gabia.emailservice.contoller;
 
 import com.gabia.emailservice.dto.request.SendEmailRequest;
-import com.gabia.emailservice.dto.request.SendVerifyEmailRequest;
 import com.gabia.emailservice.dto.response.APIResponse;
 import com.gabia.emailservice.dto.response.SendEmailResponse;
 import com.gabia.emailservice.service.EmailService;
