@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: email-service
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: "${HOST}"
+    non-secure-port: 8080
+  client:
+    serviceUrl:
+      defaultZone: "http://${EUREKA_SERVER}/eureka/"
+server:
+  port: 8080
+aws:
+  ses:
+    credentials:
+      access-key: AKIAYVRYD5CWBAESNBHL
+      secret-key: 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
+kafka:
+  bootstrap:
+    servers: "${KAFKA_SERVER}"
