@@ -6,7 +6,7 @@ stages:
 
 variables:
   CONTAINER_NAME: email-service
-  ENVIROMENT: staging
+  ENVIRONMENT: staging
 
 build-test:
   image: gradle:6.9.0-jdk11
@@ -24,14 +24,22 @@ build-docker-image:
     - docker build -t $DOCKER_HUB_ID/$IMAGE_NAME .
     - docker push $DOCKER_HUB_ID/$IMAGE_NAME
   environment:
-    name: $ENVIROMENT
+    name: $ENVIRONMENT
 
 deploy-container:
   stage: deploy
   script:
     - docker pull $DOCKER_HUB_ID/$IMAGE_NAME
-    - docker stop $CONTAINER_NAME || true
-    - docker run --rm -d -p 8080:8080 --network ai-network --name $CONTAINER_NAME $DOCKER_HUB_ID/$IMAGE_NAME
+    - "{ docker stop $CONTAINER_NAME; docker rm $CONTAINER_NAME; } || true"
+    - "docker run -d -p 8080:8080 \
+    --network ai-network \
+    --name $CONTAINER_NAME \
+    -e spring.profiles.active=$ENVIRONMENT \
+    -e HOST=$HOST \
+    -e EUREKA_SERVER=$EUREKA_SERVER \
+    -e KAFKA_SERVER=$KAFKA_SERVER \
+    $DOCKER_HUB_ID/$IMAGE_NAME"
+
   environment:
-    name: $ENVIROMENT
+    name: $ENVIRONMENT
     url: $STAGING_SERVER
