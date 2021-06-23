@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "aws.ses.credentials")
-public class AwsSesProperties {
+public class AWSSESProperties {
     private final String accessKey;
     private final String secretKey;
 }

@@ -9,12 +9,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@EnableConfigurationProperties(AwsSesProperties.class)
+@EnableConfigurationProperties(AWSSESProperties.class)
 @RequiredArgsConstructor
 @Configuration
-public class AmazonConfig {
+public class AWSConfig {
 
-    private final AwsSesProperties awsSesProperties;
+    private final AWSSESProperties awsSesProperties;
 
     @Bean
     public AmazonSimpleEmailService amazonSimpleEmailService() {

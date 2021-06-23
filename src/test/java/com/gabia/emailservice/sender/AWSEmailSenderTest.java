@@ -19,13 +19,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class AmazonEmailSenderTest {
+class AWSEmailSenderTest {
 
     @Mock
     private AmazonSimpleEmailService amazonSimpleEmailService;
 
     @InjectMocks
-    private AmazonEmailSender amazonEmailSender;
+    private AWSEmailSender awsEmailSender;
 
     @Test
     void 메일_발송_성공(){
@@ -45,7 +45,7 @@ class AmazonEmailSenderTest {
                 .willReturn(new SendEmailResult().withMessageId(response.getMessage()));
 
         //when
-        SendEmailResponse result = amazonEmailSender.sendEmail(request);
+        SendEmailResponse result = awsEmailSender.sendEmail(request);
 
         //then
         assertThat(result.getMessage()).isEqualTo(response.getMessage());
@@ -65,7 +65,7 @@ class AmazonEmailSenderTest {
                 .willThrow(new MessageRejectedException("Email address is not verified"));
 
         //when
-        SendEmailResponse sendEmailResponse = amazonEmailSender.sendEmail(request);
+        SendEmailResponse sendEmailResponse = awsEmailSender.sendEmail(request);
 
         //then
         assertThat(sendEmailResponse.getMessage()).isEqualTo("Email address is not verified");
@@ -82,7 +82,7 @@ class AmazonEmailSenderTest {
                 .willReturn(verifyEmailIdentityResult);
 
         //when
-        SendEmailResponse result = amazonEmailSender.sendVerifyEmail(emailAddress);
+        SendEmailResponse result = awsEmailSender.sendVerifyEmail(emailAddress);
 
         //then
         assertThat(result.getMessage()).isEqualTo("인증 메일 발송 완료");

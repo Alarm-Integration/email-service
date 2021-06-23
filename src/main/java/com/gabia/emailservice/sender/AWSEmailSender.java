@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AmazonEmailSender implements CommonEmailSender {
+public class AWSEmailSender implements CommonEmailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
 
