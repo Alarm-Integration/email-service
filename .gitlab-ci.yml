@@ -14,12 +14,10 @@ build-test:
   script:
     - gradle build
   artifacts:
-    - name: "jar"
-      paths:
+    untracked: true
+    paths:
       - build/libs/*.jar
-    - name: "test-result"
-      paths:
-      - build/reports/jacoco
+      - build/reports/jacoco/test
 
 build-docker-image:
   stage: build
