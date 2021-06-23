@@ -10,8 +10,8 @@ eureka:
 server:
   port: 0
 aws:
-  region: ap-northeast-2
   ses:
+    region: ap-northeast-2
     credentials:
       access-key: AKIAYVRYD5CWBAESNBHL
       secret-key: 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
