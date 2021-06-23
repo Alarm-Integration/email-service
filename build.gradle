@@ -55,6 +55,7 @@ jacocoTestReport {
         html.enabled true
         xml.enabled true
         csv.enabled true
+        xml.destination file("$buildDir/jacoco/jacoco.xml")
     }
 
     finalizedBy 'jacocoTestCoverageVerification'
