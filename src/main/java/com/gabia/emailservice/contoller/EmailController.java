@@ -1,14 +1,11 @@
 package com.gabia.emailservice.contoller;
 
-import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.dto.response.APIResponse;
-import com.gabia.emailservice.dto.response.SendEmailResponse;
 import com.gabia.emailservice.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -17,18 +14,11 @@ public class EmailController {
 
     private final EmailService emailService;
 
-    @PostMapping("/email")
-    public ResponseEntity<?> sendEmail(@RequestBody SendEmailRequest sendEmailRequest){
-        SendEmailResponse response = emailService.sendEmail(sendEmailRequest);
-
-        return ResponseEntity.ok(APIResponse.withMessage(response.getMessage()));
-    }
-
     @PostMapping("/verify-email/{email}")
-    public ResponseEntity<?> sendVerifyEmail(@PathVariable String email){
-        SendEmailResponse response = emailService.sendVerifyEmail(email);
+    public ResponseEntity<?> sendVerifyEmail(@PathVariable String email) {
+        emailService.sendVerifyEmail(email);
 
-        return ResponseEntity.ok(APIResponse.withMessage(response.getMessage()));
+        return ResponseEntity.ok(APIResponse.withMessage("인증 메일 발송 완료"));
     }
 
 }
