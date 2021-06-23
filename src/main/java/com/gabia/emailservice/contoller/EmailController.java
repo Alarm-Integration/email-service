@@ -18,7 +18,7 @@ public class EmailController {
 
     @PostMapping("/verify-email/{email}")
     public ResponseEntity<?> sendVerifyEmail(@PathVariable String email) {
-        log.info("test code");
+        log.info("test code2");
         emailService.sendVerifyEmail(email);
 
         return ResponseEntity.ok(APIResponse.withMessage("인증 메일 발송 완료"));
