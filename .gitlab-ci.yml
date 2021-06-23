@@ -1,6 +1,7 @@
 image: docker:19.03.12
 
 stages:
+  - test
   - build
   - deploy
 
@@ -8,16 +9,23 @@ variables:
   CONTAINER_NAME: email-service
   ENVIRONMENT: dev
 
-build-test:
+test:
+  image: gradle:6.9.0-jdk11
+    stage: test
+    script:
+      - gradle test jacocoTestReport
+    artifacts:
+      paths:
+        - build/jacoco/jacoco.xml
+
+build:
   image: gradle:6.9.0-jdk11
   stage: build
   script:
-    - gradle build
+    - gradle build -x test
   artifacts:
-    untracked: true
     paths:
       - build/libs/*.jar
-      - build/reports/jacoco/test
 
 build-docker-image:
   stage: build
