@@ -14,16 +14,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AWSConfig {
 
-    private final AWSSESProperties awsSesProperties;
+    private final AWSSESProperties awssesProperties;
 
     @Bean
     public AmazonSimpleEmailService amazonSimpleEmailService() {
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(awsSesProperties.getAccessKey(), awsSesProperties.getSecretKey());
+        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(awssesProperties.getCredentials().getAccessKey(),
+                awssesProperties.getCredentials().getSecretKey());
         AWSStaticCredentialsProvider awsStaticCredentialsProvider = new AWSStaticCredentialsProvider(basicAWSCredentials);
 
         return AmazonSimpleEmailServiceClientBuilder.standard()
                 .withCredentials(awsStaticCredentialsProvider)
-                .withRegion("ap-northeast-2")
+                .withRegion(awssesProperties.getRegion())
                 .build();
     }
 }
