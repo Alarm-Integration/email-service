@@ -16,10 +16,10 @@ build-test:
   artifacts:
     - name: "jar"
       paths:
-        - build/libs/*.jar
+      - build/libs/*.jar
     - name: "test-result"
       paths:
-        - build/reports/jacoco
+      - build/reports/jacoco
 
 build-docker-image:
   stage: build
