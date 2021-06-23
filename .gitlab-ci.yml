@@ -11,12 +11,12 @@ variables:
 
 test:
   image: gradle:6.9.0-jdk11
-    stage: test
-    script:
-      - gradle test jacocoTestReport
-    artifacts:
-      paths:
-        - build/jacoco/jacoco.xml
+  stage: test
+  script:
+    - gradle test jacocoTestReport
+  artifacts:
+    paths:
+      - build/jacoco/jacoco.xml
 
 build:
   image: gradle:6.9.0-jdk11
