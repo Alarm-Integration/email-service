@@ -27,7 +27,7 @@ public class SendEmailRequest {
         this.content = content;
     }
 
-    public com.amazonaws.services.simpleemail.model.SendEmailRequest toSendRequestDto() {
+    public com.amazonaws.services.simpleemail.model.SendEmailRequest toAWSRequest() {
         Destination destination = new Destination()
                 .withToAddresses(this.raws);
 
