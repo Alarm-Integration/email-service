@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
-import com.gabia.emailservice.dto.response.SendEmailResponse;
 import com.gabia.emailservice.sender.CommonEmailSender;
 import com.gabia.emailservice.util.MemoryAppender;
 import org.assertj.core.util.Lists;
@@ -64,10 +63,6 @@ class EmailServiceTest {
     void 인증_메일_발송_성공() {
         //given
         String emailAddress = "nameks@naver.com";
-
-        SendEmailResponse response = SendEmailResponse.builder()
-                .message("ok")
-                .build();
 
         doNothing().when(commonEmailSender).sendVerifyEmail(emailAddress);
 
