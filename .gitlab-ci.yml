@@ -6,7 +6,7 @@ stages:
 
 variables:
   CONTAINER_NAME: email-service
-  ENVIRONMENT: staging
+  ENVIRONMENT: dev
 
 build-test:
   image: gradle:6.9.0-jdk11
@@ -26,13 +26,13 @@ build-docker-image:
   environment:
     name: $ENVIRONMENT
 
-deploy-container:
+deploy:
   stage: deploy
   script:
     - docker pull $DOCKER_HUB_ID/$IMAGE_NAME
     - "{ docker stop $CONTAINER_NAME; docker rm $CONTAINER_NAME; } || true"
-    - "docker run -d -p 8080:8080 \
-    --network ai-network \
+    - "docker run -d -p $EMAIL_SERVICE_PORT:$EMAIL_SERVICE_PORT \
+    --network $DOCKER_NETWORK \
     --name $CONTAINER_NAME \
     -e spring.profiles.active=$ENVIRONMENT \
     -e HOST=$HOST \
@@ -42,4 +42,4 @@ deploy-container:
 
   environment:
     name: $ENVIRONMENT
-    url: $STAGING_SERVER
+    url: $DEV_SERVER

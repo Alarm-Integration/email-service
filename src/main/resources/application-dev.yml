@@ -10,7 +10,7 @@ eureka:
     serviceUrl:
       defaultZone: "http://${EUREKA_SERVER}/eureka/"
 server:
-  port: 8080
+  port: 30030
 aws:
   ses:
     credentials:
