@@ -11,12 +11,8 @@ public class APIResponse {
     public static APIResponse withMessage(String message){
         return APIResponse.builder()
                 .message(message)
+                .result(null)
                 .build();
-    }
-
-    @Builder
-    public APIResponse(String message) {
-        this.message = message;
     }
 
     @Builder
