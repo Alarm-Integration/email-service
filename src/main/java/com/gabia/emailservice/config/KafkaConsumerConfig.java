@@ -2,7 +2,6 @@ package com.gabia.emailservice.config;
 
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +24,7 @@ public class KafkaConsumerConfig {
     private String kafkaServer;
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, SendEmailRequest> userListener() {
+    public ConcurrentKafkaListenerContainerFactory<String, SendEmailRequest> emailListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, SendEmailRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(emailConsumer());
@@ -39,10 +38,7 @@ public class KafkaConsumerConfig {
 
     private ConsumerFactory<String, SendEmailRequest> emailConsumer() {
         Map<String, Object> config = new HashMap<>();
-
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new JsonDeserializer<>(SendEmailRequest.class));
     }
