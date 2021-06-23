@@ -31,7 +31,6 @@ dependencies {
 
     // Kafka, deserialize
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.4'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -71,10 +70,10 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.0
+                minimum = 0.7
             }
 
-            excludes = []
+            excludes = ['com.gabia.emailservice.sender.CommonEmailSender', 'com.gabia.emailservice.EmailServiceApplication']
         }
     }
 }
