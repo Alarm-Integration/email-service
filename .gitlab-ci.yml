@@ -18,8 +18,8 @@ build-test:
       paths:
         - build/libs/*.jar
     - name: "test-result"
-        paths:
-          - build/reports/jacoco
+      paths:
+        - build/reports/jacoco
 
 build-docker-image:
   stage: build
