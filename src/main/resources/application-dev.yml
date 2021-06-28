@@ -14,8 +14,8 @@ server:
 aws:
   ses:
     credentials:
-      access-key: AKIAYVRYD5CWBAESNBHL
-      secret-key: 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
+      access-key: AKIAYVRYD5CWIFT3XZVI
+      secret-key: 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
 kafka:
   bootstrap:
     servers: "${KAFKA_SERVER}"
