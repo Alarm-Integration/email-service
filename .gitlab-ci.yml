@@ -14,7 +14,7 @@ test:
   image: gradle:6.9.0-jdk11
   stage: test
   script:
-    - gradle test jacocoTestReport
+    - gradle test
   artifacts:
     paths:
       - build/jacoco/jacoco.xml
@@ -38,15 +38,25 @@ build:
   artifacts:
     paths:
       - build/libs/*.jar
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}
+    policy: push
+    paths:
+      - build/libs/*.jar
 
 build-docker-image:
   stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}
+    policy: pull
+    paths:
+      - build/libs/*.jar
   script:
     - docker login -u $DOCKER_HUB_ID -p $DOCKER_HUB_PASSWORD
     - docker build -t $DOCKER_HUB_ID/$IMAGE_NAME .
     - docker push $DOCKER_HUB_ID/$IMAGE_NAME
   environment:
-    name: $ENVIRONMENT
+    name: $ENVIROMENT
 
 deploy:
   stage: deploy
