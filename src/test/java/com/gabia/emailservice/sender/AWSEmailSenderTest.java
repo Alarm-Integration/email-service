@@ -10,7 +10,6 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityRequest;
 import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityResult;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.util.MemoryAppender;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -48,31 +50,42 @@ class AWSEmailSenderTest {
     @Test
     void 메일_발송_성공() throws Exception {
         //given
+        String sender = "nameks17@gmail.com";
+        String title = "제목";
+        String content = "내용";
+        List<String> raws = Arrays.asList("nameks@naver.com");
+
         SendEmailRequest request = SendEmailRequest.builder()
-                .sender("nameks17@gmail.com")
-                .raws(Lists.newArrayList("nameks@naver.com"))
-                .title("테스트")
-                .content("안녕하세요")
+                .sender(sender)
+                .raws(raws)
+                .title(title)
+                .content(content)
                 .build();
 
-        SendEmailResult sendEmailResult = mock(SendEmailResult.class);
+        SendEmailResult sendEmailResult = new SendEmailResult().withMessageId("123");
         given(amazonSimpleEmailService.sendEmail(request.toAWSRequest())).willReturn(sendEmailResult);
 
         //when
         amazonEmailSender.sendEmail(request);
 
         //then
-        assertThat(memoryAppender.getSize()).isEqualTo(0);
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("AWSEmailSender: 발송 성공 %s", "123"), Level.INFO)).isTrue();
     }
 
     @Test
     void 메일_발송_실패_인증하지_않은_발신자() {
         //given
+        String sender = "notverified@email.com";
+        String title = "제목";
+        String content = "내용";
+        List<String> raws = Arrays.asList("nameks@naver.com");
+
         SendEmailRequest request = SendEmailRequest.builder()
-                .sender("notverified@email.com")
-                .raws(Lists.newArrayList("nameks@naver.com"))
-                .title("테스트")
-                .content("안녕하세요")
+                .sender(sender)
+                .raws(raws)
+                .title(title)
+                .content(content)
                 .build();
 
         given(amazonSimpleEmailService.sendEmail(request.toAWSRequest()))
@@ -82,8 +95,9 @@ class AWSEmailSenderTest {
         Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(request));
 
         //then
-        assertThat(throwable).isInstanceOf(Exception.class)
-                .hasMessageContaining("인증된 발신자가 아닙니다.");
+        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("인증된 발신자가 아닙니다");
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("AWSEmailSender: 인증된 발신자(%s)가 아닙니다", sender), Level.ERROR)).isTrue();
     }
 
     @Test
@@ -100,6 +114,7 @@ class AWSEmailSenderTest {
         amazonEmailSender.sendVerifyEmail(emailAddress);
 
         //then
-        assertThat(memoryAppender.getSize()).isEqualTo(0);
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains("AWSEmailSender: 인증 메일 발송 성공", Level.INFO)).isTrue();
     }
 }
