@@ -6,7 +6,6 @@ import ch.qos.logback.classic.LoggerContext;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.sender.CommonEmailSender;
 import com.gabia.emailservice.util.MemoryAppender;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
@@ -42,11 +45,16 @@ class EmailServiceTest {
     @Test
     void 메일_발송_성공() throws Exception {
         //given
+        String sender = "nameks17@gmail.com";
+        List<String> raws = Arrays.asList("nameks@naver.com");
+        String title = "제목";
+        String content = "내용";
+
         SendEmailRequest request = SendEmailRequest.builder()
-                .sender("nameks17@gmail.com")
-                .raws(Lists.newArrayList("nameks@naver.com"))
-                .title("테스트")
-                .content("안녕하세요")
+                .sender(sender)
+                .raws(raws)
+                .title(title)
+                .content(content)
                 .build();
 
         doNothing().when(commonEmailSender).sendEmail(request);
@@ -56,7 +64,32 @@ class EmailServiceTest {
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains("메일 발송 완료", Level.INFO)).isTrue();
+        assertThat(memoryAppender.contains("EmailService: 메일 발송 완료", Level.INFO)).isTrue();
+    }
+
+    @Test
+    void 메일_발송_실패_인증하지_않은_발신자() throws Exception {
+        //given
+        String sender = "notverified@email.com";
+        List<String> raws = Arrays.asList("nameks@naver.com");
+        String title = "제목";
+        String content = "내용";
+
+        SendEmailRequest request = SendEmailRequest.builder()
+                .sender(sender)
+                .raws(raws)
+                .title(title)
+                .content(content)
+                .build();
+
+        doThrow(new Exception("인증된 발신자가 아닙니다")).when(commonEmailSender).sendEmail(request);
+
+        //when
+        emailService.sendEmail(request);
+
+        //then
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("EmailService: 메일 발송 실패 %s", "인증된 발신자가 아닙니다"), Level.ERROR)).isTrue();
     }
 
     @Test
@@ -71,7 +104,7 @@ class EmailServiceTest {
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains("인증 메일 발송 완료", Level.INFO)).isTrue();
+        assertThat(memoryAppender.contains("EmailService: 인증 메일 발송 완료", Level.INFO)).isTrue();
     }
 
 }
