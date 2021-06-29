@@ -19,13 +19,13 @@ public class AWSEmailSender implements CommonEmailSender {
     public void sendEmail(SendEmailRequest request) throws Exception {
         try {
             SendEmailResult sendEmailResult = amazonSimpleEmailService.sendEmail(request.toAWSRequest());
-            log.info(String.format("AWSEmailSender: 발송 성공 %s", sendEmailResult.getMessageId()));
+            log.info("AWSEmailSender: 발송 성공 {}", sendEmailResult.getMessageId());
         } catch (Exception e) {
             if (e.getMessage().startsWith("Email address is not verified")) {
-                log.error(String.format("AWSEmailSender: 인증된 발신자(%s)가 아닙니다", request.getSender()));
+                log.error("AWSEmailSender: 인증된 발신자({})가 아닙니다", request.getSender());
                 throw new Exception("인증된 발신자가 아닙니다");
             }
-            log.error(String.format("AWSEmailSender: %s", e.getMessage()));
+            log.error("AWSEmailSender: {}", e.getMessage());
             throw new Exception(e.getMessage());
         }
     }

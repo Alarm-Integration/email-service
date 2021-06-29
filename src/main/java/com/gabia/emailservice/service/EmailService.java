@@ -20,7 +20,7 @@ public class EmailService {
             commonEmailSender.sendEmail(sendEmailRequest);
             log.info("EmailService: 메일 발송 완료");
         } catch (Exception e) {
-            log.error(String.format("EmailService: 메일 발송 실패 %s", e.getMessage()));
+            log.error("EmailService: 메일 발송 실패 {}", e.getMessage());
         }
     }
 
