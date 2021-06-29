@@ -17,6 +17,8 @@ public class SendEmailRequest {
     private List<String> raws;
     private String title;
     private String content;
+    private String traceId;
+    private Long userId;
 
     @Builder
     public SendEmailRequest(String sender, List<String> raws, String title, String content) {
