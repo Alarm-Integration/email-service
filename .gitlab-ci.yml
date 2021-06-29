@@ -70,6 +70,8 @@ deploy:
     -e HOST=$HOST \
     -e EUREKA_SERVER=$EUREKA_SERVER \
     -e KAFKA_SERVER=$KAFKA_SERVER \
+    -e ACCESS_KEY=$ACCESS_KEY \
+    -e SECRET_KEY=$SECRET_KEY \
     $DOCKER_HUB_ID/$IMAGE_NAME"
 
   environment:
