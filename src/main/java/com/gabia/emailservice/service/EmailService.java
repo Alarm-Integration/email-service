@@ -18,14 +18,14 @@ public class EmailService {
     public void sendEmail(SendEmailRequest sendEmailRequest) {
         try {
             commonEmailSender.sendEmail(sendEmailRequest);
-            log.info("메일 발송 완료");
+            log.info("EmailService: 메일 발송 완료");
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(String.format("EmailService: 메일 발송 실패 %s", e.getMessage()));
         }
     }
 
     public void sendVerifyEmail(String emailAddress) {
         commonEmailSender.sendVerifyEmail(emailAddress);
-        log.info("인증 메일 발송 완료");
+        log.info("EmailService: 인증 메일 발송 완료");
     }
 }
