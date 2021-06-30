@@ -8,13 +8,27 @@ import lombok.*;
 
 import java.util.List;
 
+@Setter
 @Getter
 @EqualsAndHashCode
+@NoArgsConstructor
 public class SendEmailRequest {
     private String sender;
     private List<String> raws;
     private String title;
     private String content;
+    private String traceId;
+    private Long userId;
+
+    @Builder
+    public SendEmailRequest(String sender, List<String> raws, String title, String content, String traceId, Long userId) {
+        this.sender = sender;
+        this.raws = raws;
+        this.title = title;
+        this.content = content;
+        this.traceId = traceId;
+        this.userId = userId;
+    }
 
     @Builder
     public SendEmailRequest(String sender, List<String> raws, String title, String content) {
