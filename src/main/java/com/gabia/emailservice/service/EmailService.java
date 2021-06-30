@@ -14,7 +14,7 @@ public class EmailService {
 
     private final CommonEmailSender commonEmailSender;
 
-    @KafkaListener(topics = "email", groupId = "email", containerFactory = "emailListenerContainerFactory")
+    @KafkaListener(topics = "email", groupId = "email", containerFactory = "kafkaListenerContainerFactory")
     public void sendEmail(SendEmailRequest sendEmailRequest) {
         try {
             commonEmailSender.sendEmail(sendEmailRequest);
