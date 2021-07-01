@@ -34,7 +34,7 @@ class EmailServiceTest {
 
     @BeforeEach
     public void setup() {
-        Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        Logger logger = (Logger) LoggerFactory.getLogger(EmailService.class);
         memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
         logger.setLevel(Level.INFO);
@@ -49,12 +49,16 @@ class EmailServiceTest {
         List<String> raws = Arrays.asList("nameks@naver.com");
         String title = "제목";
         String content = "내용";
+        String traceId = "abc";
+        Long userId = 1L;
 
         SendEmailRequest request = SendEmailRequest.builder()
                 .sender(sender)
                 .raws(raws)
                 .title(title)
                 .content(content)
+                .userId(userId)
+                .traceId(traceId)
                 .build();
 
         doNothing().when(commonEmailSender).sendEmail(request);
@@ -64,7 +68,8 @@ class EmailServiceTest {
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains("EmailService: 메일 발송 완료", Level.INFO)).isTrue();
+        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
+                "EmailService", request.getUserId(), request.getTraceId(), "메일 발송 성공"), Level.INFO)).isTrue();
     }
 
     @Test
@@ -74,12 +79,16 @@ class EmailServiceTest {
         List<String> raws = Arrays.asList("nameks@naver.com");
         String title = "제목";
         String content = "내용";
+        String traceId = "abc";
+        Long userId = 1L;
 
         SendEmailRequest request = SendEmailRequest.builder()
                 .sender(sender)
                 .raws(raws)
                 .title(title)
                 .content(content)
+                .userId(userId)
+                .traceId(traceId)
                 .build();
 
         doThrow(new Exception("인증된 발신자가 아닙니다")).when(commonEmailSender).sendEmail(request);
@@ -89,7 +98,8 @@ class EmailServiceTest {
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("EmailService: 메일 발송 실패 %s", "인증된 발신자가 아닙니다"), Level.ERROR)).isTrue();
+        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
+                "EmailService", request.getUserId(), request.getTraceId(), "메일 발송 실패"), Level.ERROR)).isTrue();
     }
 
     @Test

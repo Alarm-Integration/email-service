@@ -15,12 +15,12 @@ public class EmailService {
     private final CommonEmailSender commonEmailSender;
 
     @KafkaListener(topics = "email", groupId = "email", containerFactory = "kafkaListenerContainerFactory")
-    public void sendEmail(SendEmailRequest sendEmailRequest) {
+    public void sendEmail(SendEmailRequest request) {
         try {
-            commonEmailSender.sendEmail(sendEmailRequest);
-            log.info("EmailService: 메일 발송 완료");
+            commonEmailSender.sendEmail(request);
+            log.info("{}: userId:{} traceId:{} massage:{}", getClass().getSimpleName(), request.getUserId(), request.getTraceId(), "메일 발송 성공");
         } catch (Exception e) {
-            log.error("EmailService: 메일 발송 실패 {}", e.getMessage());
+            log.error("{}: userId:{} traceId:{} massage:{}", getClass().getSimpleName(), request.getUserId(), request.getTraceId(), "메일 발송 실패");
         }
     }
 

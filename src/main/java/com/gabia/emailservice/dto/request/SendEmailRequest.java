@@ -30,14 +30,6 @@ public class SendEmailRequest {
         this.userId = userId;
     }
 
-    @Builder
-    public SendEmailRequest(String sender, List<String> raws, String title, String content) {
-        this.sender = sender;
-        this.raws = raws;
-        this.title = title;
-        this.content = content;
-    }
-
     public com.amazonaws.services.simpleemail.model.SendEmailRequest toAWSRequest() {
         Destination destination = new Destination()
                 .withToAddresses(this.raws);
