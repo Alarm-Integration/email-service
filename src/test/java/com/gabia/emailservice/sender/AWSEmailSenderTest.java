@@ -37,6 +37,13 @@ class AWSEmailSenderTest {
 
     private MemoryAppender memoryAppender;
 
+    private String sender = "nameks17@gmail.com";
+    private List<String> raws = Arrays.asList("nameks@naver.com");
+    private String title = "제목";
+    private String content = "내용";
+    private String traceId = "abc";
+    private Long userId = 1L;
+
     @BeforeEach
     public void setup() {
         Logger logger = (Logger) LoggerFactory.getLogger(AWSEmailSender.class);
@@ -50,14 +57,7 @@ class AWSEmailSenderTest {
     @Test
     void 메일_발송_성공() throws Exception {
         //given
-        String sender = "nameks17@gmail.com";
-        String title = "제목";
-        String content = "내용";
-        List<String> raws = Arrays.asList("nameks@naver.com");
-        String traceId = "abc";
-        Long userId = 1L;
-
-        SendEmailRequest request = SendEmailRequest.builder()
+        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
                 .raws(raws)
                 .title(title)
@@ -67,28 +67,21 @@ class AWSEmailSenderTest {
                 .build();
 
         SendEmailResult sendEmailResult = new SendEmailResult().withMessageId("123");
-        given(amazonSimpleEmailService.sendEmail(request.toAWSRequest())).willReturn(sendEmailResult);
+        given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest())).willReturn(sendEmailResult);
 
         //when
-        amazonEmailSender.sendEmail(request);
+        amazonEmailSender.sendEmail(sendEmailRequest);
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
         assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s massageId:%s",
-                "AWSEmailSender", request.getUserId(), request.getTraceId(), "메일 발송 성공", sendEmailResult.getMessageId()), Level.INFO)).isTrue();
+                "AWSEmailSender", sendEmailRequest.getUserId(), sendEmailRequest.getTraceId(), "메일 발송 성공", sendEmailResult.getMessageId()), Level.INFO)).isTrue();
     }
 
     @Test
     void 메일_발송_실패_인증하지_않은_발신자() {
         //given
-        String sender = "notverified@email.com";
-        String title = "제목";
-        String content = "내용";
-        List<String> raws = Arrays.asList("nameks@naver.com");
-        String traceId = "abc";
-        Long userId = 1L;
-
-        SendEmailRequest request = SendEmailRequest.builder()
+        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
                 .raws(raws)
                 .title(title)
@@ -97,17 +90,17 @@ class AWSEmailSenderTest {
                 .traceId(traceId)
                 .build();
 
-        given(amazonSimpleEmailService.sendEmail(request.toAWSRequest()))
+        given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
                 .willThrow(new MessageRejectedException("Email address is not verified"));
 
         //when
-        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(request));
+        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
 
         //then
         assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("인증된 발신자가 아닙니다");
         assertThat(memoryAppender.getSize()).isEqualTo(1);
         assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
-                "AWSEmailSender", request.getUserId(), request.getTraceId(), "인증된 발신자가 아닙니다"), Level.ERROR)).isTrue();
+                "AWSEmailSender", sendEmailRequest.getUserId(), sendEmailRequest.getTraceId(), "인증된 발신자가 아닙니다"), Level.ERROR)).isTrue();
     }
 
     @Test
