@@ -30,6 +30,17 @@ public class SendEmailRequest {
         this.userId = userId;
     }
 
+    public static SendEmailRequest createFrom(AlarmMessage alarmMessage, String senderAddress) {
+        return SendEmailRequest.builder()
+                .sender(senderAddress)
+                .raws(alarmMessage.getRaws())
+                .title(alarmMessage.getTitle())
+                .content(alarmMessage.getContent())
+                .traceId(alarmMessage.getTraceId())
+                .userId(alarmMessage.getUserId())
+                .build();
+    }
+
     public com.amazonaws.services.simpleemail.model.SendEmailRequest toAWSRequest() {
         Destination destination = new Destination()
                 .withToAddresses(this.raws);
