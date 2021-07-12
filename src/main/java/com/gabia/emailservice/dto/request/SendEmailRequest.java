@@ -14,16 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 public class SendEmailRequest {
     private String sender;
-    private List<String> raws;
+    private List<String> receivers;
     private String title;
     private String content;
     private String traceId;
     private Long userId;
 
     @Builder
-    public SendEmailRequest(String sender, List<String> raws, String title, String content, String traceId, Long userId) {
+    public SendEmailRequest(String sender, List<String> receivers, String title, String content, String traceId, Long userId) {
         this.sender = sender;
-        this.raws = raws;
+        this.receivers = receivers;
         this.title = title;
         this.content = content;
         this.traceId = traceId;
@@ -33,7 +33,7 @@ public class SendEmailRequest {
     public static SendEmailRequest createFrom(AlarmMessage alarmMessage, String senderAddress) {
         return SendEmailRequest.builder()
                 .sender(senderAddress)
-                .raws(alarmMessage.getRaws())
+                .receivers(alarmMessage.getReceivers())
                 .title(alarmMessage.getTitle())
                 .content(alarmMessage.getContent())
                 .traceId(alarmMessage.getTraceId())
@@ -43,7 +43,7 @@ public class SendEmailRequest {
 
     public com.amazonaws.services.simpleemail.model.SendEmailRequest toAWSRequest() {
         Destination destination = new Destination()
-                .withToAddresses(this.raws);
+                .withToAddresses(this.receivers);
 
         Message message = new Message()
                 .withSubject(createContent(this.title))

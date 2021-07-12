@@ -25,7 +25,7 @@ class AlarmMessageDeserializerTest {
                 .userId(userId)
                 .groupId(groupId)
                 .traceId(traceId)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .build();

@@ -56,7 +56,7 @@ class EmailServiceTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -65,7 +65,7 @@ class EmailServiceTest {
 
         AlarmMessage alarmMessage = AlarmMessage.builder()
                 .groupId(groupId)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -88,7 +88,7 @@ class EmailServiceTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -97,7 +97,7 @@ class EmailServiceTest {
 
         AlarmMessage alarmMessage = AlarmMessage.builder()
                 .groupId(groupId)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)

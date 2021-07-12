@@ -59,7 +59,7 @@ class AWSEmailSenderTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -83,7 +83,7 @@ class AWSEmailSenderTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .raws(raws)
+                .receivers(raws)
                 .title(title)
                 .content(content)
                 .userId(userId)
