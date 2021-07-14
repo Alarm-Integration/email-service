@@ -4,10 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
-import com.amazonaws.services.simpleemail.model.MessageRejectedException;
-import com.amazonaws.services.simpleemail.model.SendEmailResult;
-import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityRequest;
-import com.amazonaws.services.simpleemail.model.VerifyEmailIdentityResult;
+import com.amazonaws.services.simpleemail.model.*;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.util.MemoryAppender;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -38,7 +35,7 @@ class AWSEmailSenderTest {
     private MemoryAppender memoryAppender;
 
     private String sender = "nameks17@gmail.com";
-    private List<String> raws = Arrays.asList("nameks@naver.com");
+    private List<String> receivers = Arrays.asList("nameks@naver.com");
     private String title = "제목";
     private String content = "내용";
     private String traceId = "abc";
@@ -55,11 +52,11 @@ class AWSEmailSenderTest {
     }
 
     @Test
-    void 메일_발송_성공() throws Exception {
+    void 메일_발송_성공() {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(raws)
+                .receivers(receivers)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -70,37 +67,85 @@ class AWSEmailSenderTest {
         given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest())).willReturn(sendEmailResult);
 
         //when
-        amazonEmailSender.sendEmail(sendEmailRequest);
+        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
 
         //then
-        assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s massageId:%s",
-                "AWSEmailSender", sendEmailRequest.getUserId(), sendEmailRequest.getTraceId(), "메일 발송 성공", sendEmailResult.getMessageId()), Level.INFO)).isTrue();
+        assertThat(throwable).isNull();
     }
 
     @Test
     void 메일_발송_실패_인증하지_않은_발신자() {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                .sender(sender)
-                .receivers(raws)
+                .sender("notverified@email.com")
+                .receivers(receivers)
                 .title(title)
                 .content(content)
                 .userId(userId)
                 .traceId(traceId)
                 .build();
 
+        MessageRejectedException exception = new MessageRejectedException("exception");
+        exception.setErrorCode("MessageRejected");
+
         given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
-                .willThrow(new MessageRejectedException("Email address is not verified"));
+                .willThrow(exception);
 
         //when
         Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
 
         //then
-        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("인증된 발신자가 아닙니다");
-        assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
-                "AWSEmailSender", sendEmailRequest.getUserId(), sendEmailRequest.getTraceId(), "인증된 발신자가 아닙니다"), Level.ERROR)).isTrue();
+        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("MessageRejected");
+    }
+
+    @Test
+    void 메일_발송_실패_receivers_이메일_형식_아님() {
+        //given
+        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
+                .sender(sender)
+                .receivers(Arrays.asList("nameks@naver.com", "01012345678"))
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .traceId(traceId)
+                .build();
+
+        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException("exception");
+        exception.setErrorCode("InvalidParameterValue");
+
+        given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
+                .willThrow(exception);
+
+        //when
+        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
+
+        //then
+        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("InvalidParameterValue");
+    }
+
+    @Test
+    void 메일_발송_실패_비어있는_receivers() {
+        //given
+        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
+                .sender(sender)
+                .receivers(Arrays.asList())
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .traceId(traceId)
+                .build();
+
+        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException("exception");
+        exception.setErrorCode("ValidationError");
+
+        given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
+                .willThrow(exception);
+
+        //when
+        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
+
+        //then
+        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("ValidationError");
     }
 
     @Test
@@ -116,8 +161,10 @@ class AWSEmailSenderTest {
         //when
         amazonEmailSender.sendVerifyEmail(emailAddress);
 
+        //when
+        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendVerifyEmail(emailAddress));
+
         //then
-        assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains("AWSEmailSender: 인증 메일 발송 성공", Level.INFO)).isTrue();
+        assertThat(throwable).isNull();
     }
 }

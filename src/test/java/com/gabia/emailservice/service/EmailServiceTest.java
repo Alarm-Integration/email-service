@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
@@ -79,7 +79,7 @@ class EmailServiceTest {
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
+        assertThat(memoryAppender.contains(String.format("[%s: userId:%s traceId:%s] %s",
                 "EmailService", alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 성공"), Level.INFO)).isTrue();
     }
 
@@ -104,15 +104,17 @@ class EmailServiceTest {
                 .traceId(traceId)
                 .build();
 
-        doThrow(new Exception("인증된 발신자가 아닙니다")).when(commonEmailSender).sendEmail(sendEmailRequest);
+        Exception exception = new Exception(String.format("errorCode: %s", "MessageRejected"));
+        willThrow(exception).given(commonEmailSender).sendEmail(sendEmailRequest);
 
         //when
         emailService.sendEmail(alarmMessage);
 
         //then
         assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s massage:%s",
-                "EmailService", alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 실패"), Level.ERROR)).isTrue();
+        assertThat(memoryAppender.contains(String.format("[%s: userId:%s traceId:%s] %s",
+                "EmailService", alarmMessage.getUserId(), alarmMessage.getTraceId(),
+                String.format("errorCode: %s", "MessageRejected")), Level.ERROR)).isTrue();
     }
 
     @Test

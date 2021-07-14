@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -17,15 +19,16 @@ public class EmailService {
 
     @KafkaListener(topics = "email", groupId = "email", containerFactory = "kafkaListenerContainerFactory")
     public void sendEmail(AlarmMessage alarmMessage) {
-
         String senderAddress = getSenderAddress(alarmMessage.getGroupId());
         SendEmailRequest sendEmailRequest = SendEmailRequest.createFrom(alarmMessage, senderAddress);
 
         try {
             commonEmailSender.sendEmail(sendEmailRequest);
-            log.info("{}: userId:{} traceId:{} massage:{}", getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 성공");
+            log.info("[{}: userId:{} traceId:{}] {}",
+                    getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 성공");
         } catch (Exception e) {
-            log.error("{}: userId:{} traceId:{} massage:{}", getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 실패");
+            log.error("[{}: userId:{} traceId:{}] {}",
+                    getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), e.getMessage());
         }
     }
 
