@@ -1,3 +1,10 @@
+server:
+  port: 30030
+
+spring:
+  application:
+    name: email-service
+
 eureka:
   client:
     register-with-eureka: false
@@ -5,7 +12,11 @@ eureka:
 
 kafka:
   bootstrap:
-    servers: localhost:9092
+    servers: 139.150.75.238:19092,139.150.75.239:19092,139.150.75.240:19092
 
-server:
-  port: 8080
+aws:
+  ses:
+    region: ap-northeast-2
+    credentials:
+      access-key: AKIAYVRYD5CWDR75PIG4
+      secret-key: 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

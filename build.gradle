@@ -23,7 +23,19 @@ ext {
     set('springCloudVersion', "2020.0.3")
 }
 
+jar {
+    enabled = false
+}
+
 dependencies {
+    //swagger
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    //config
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     //ASW SES SDK
