@@ -1,22 +1,12 @@
+server:
+  port: 30030
+
 spring:
   application:
     name: email-service
+
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: "${HOST}"
+    ip-address: "${HOST_IP}"
     non-secure-port: 8080
-  client:
-    serviceUrl:
-      defaultZone: "http://${EUREKA_SERVER}/eureka/"
-server:
-  port: 30030
-aws:
-  ses:
-    region: ap-northeast-2
-    credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
-kafka:
-  bootstrap:
-    servers: "${KAFKA_SERVER}"
