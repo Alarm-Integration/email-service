@@ -15,4 +15,4 @@ springfox:
   documentation:
     swagger:
       v2:
-        path: /user-service/v2/api-docs
+        path: /email-service/v2/api-docs
