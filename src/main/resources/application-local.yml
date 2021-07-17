@@ -26,3 +26,7 @@ springfox:
     swagger:
       v2:
         path: /email-service/v2/api-docs
+
+fluentd:
+  uri: 139.150.75.240
+  port: 24224

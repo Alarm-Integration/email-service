@@ -6,6 +6,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.gabia.emailservice.dto.request.AlarmMessage;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.sender.CommonEmailSender;
+import com.gabia.emailservice.util.LogSender;
 import com.gabia.emailservice.util.MemoryAppender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
+
+    @Mock
+    private LogSender logSender;
 
     @Mock
     private CommonEmailSender commonEmailSender;

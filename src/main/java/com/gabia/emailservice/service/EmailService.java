@@ -3,11 +3,14 @@ package com.gabia.emailservice.service;
 import com.gabia.emailservice.dto.request.AlarmMessage;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 import com.gabia.emailservice.sender.CommonEmailSender;
+import com.gabia.emailservice.util.LogSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.io.IOException;
 
 @Validated
 @Slf4j
@@ -16,17 +19,20 @@ import org.springframework.validation.annotation.Validated;
 public class EmailService {
 
     private final CommonEmailSender commonEmailSender;
+    private final LogSender logSender;
 
     @KafkaListener(topics = "email", groupId = "email", containerFactory = "kafkaListenerContainerFactory")
-    public void sendEmail(AlarmMessage alarmMessage) {
+    public void sendEmail(AlarmMessage alarmMessage) throws IOException {
         String senderAddress = getSenderAddress(alarmMessage.getGroupId());
         SendEmailRequest sendEmailRequest = SendEmailRequest.createFrom(alarmMessage, senderAddress);
 
         try {
             commonEmailSender.sendEmail(sendEmailRequest);
+            logSender.send(sendEmailRequest.getUserId(), "email", sendEmailRequest.getTraceId(), "메일 발송 성공");
             log.info("[{}: userId:{} traceId:{}] {}",
                     getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 성공");
         } catch (Exception e) {
+            logSender.send(sendEmailRequest.getUserId(), "email", sendEmailRequest.getTraceId(), "메일 발송 실패");
             log.error("[{}: userId:{} traceId:{}] {}",
                     getClass().getSimpleName(), alarmMessage.getUserId(), alarmMessage.getTraceId(), e.getMessage());
         }
