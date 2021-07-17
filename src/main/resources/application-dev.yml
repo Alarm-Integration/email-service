@@ -9,7 +9,6 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: "${HOST_IP}"
-    non-secure-port: 8080
 
 springfox:
   documentation:
