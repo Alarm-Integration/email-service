@@ -20,3 +20,9 @@ aws:
     credentials:
       access-key: AKIAYVRYD5CWDR75PIG4
       secret-key: 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
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /user-service/v2/api-docs

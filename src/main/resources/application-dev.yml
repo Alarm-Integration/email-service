@@ -10,3 +10,9 @@ eureka:
     prefer-ip-address: true
     ip-address: "${HOST_IP}"
     non-secure-port: 8080
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /user-service/v2/api-docs
