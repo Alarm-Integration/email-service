@@ -12,6 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static java.lang.String.format;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,16 +37,19 @@ class EmailControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(emailController).build();
     }
 
+    private URI uri(String path) throws URISyntaxException {
+        return new URI(format("/email-service%s", path));
+    }
+
     @Test
     void 인증_메일_발송_성공() throws Exception {
         //given
         String emailAddress = "nameks@naver.com";
-        String url = "/verify-email/" + emailAddress;
 
         doNothing().when(emailService).sendVerifyEmail(emailAddress);
 
         //when
-        ResultActions result = mockMvc.perform(post(url)
+        ResultActions result = mockMvc.perform(post(uri("/verify-email/" + emailAddress))
                 .accept(MediaType.APPLICATION_JSON));
 
         //then
