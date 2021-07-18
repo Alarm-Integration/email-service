@@ -13,14 +13,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -33,14 +33,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("nameks171@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -53,14 +53,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks1@naver.com"))
+                .addresses(Lists.newArrayList("nameks1@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -73,14 +73,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks1@naver.com", "nameks2@naver.com"))
+                .addresses(Lists.newArrayList("nameks1@naver.com", "nameks2@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks1@naver.com", "nameks3@naver.com"))
+                .addresses(Lists.newArrayList("nameks1@naver.com", "nameks3@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -93,14 +93,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("nameks17@gmail.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -118,14 +118,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("1")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("2")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("테스트")
                 .content("안녕하세요")
                 .build();
@@ -143,14 +143,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("제목1")
                 .content("내용")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("제목2")
                 .content("내용")
                 .build();
@@ -168,14 +168,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("제목1")
                 .content("내용")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks@naver.com"))
+                .addresses(Lists.newArrayList("nameks@naver.com"))
                 .title("제목1")
                 .content("내용2")
                 .build();
@@ -193,14 +193,14 @@ class SendEmailRequestTest {
         //given
         SendEmailRequest request1 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks1@naver.com"))
+                .addresses(Lists.newArrayList("nameks1@naver.com"))
                 .title("제목1")
                 .content("내용1")
                 .build();
 
         SendEmailRequest request2 = SendEmailRequest.builder()
                 .sender("sender@email.com")
-                .receivers(Lists.newArrayList("nameks2@naver.com"))
+                .addresses(Lists.newArrayList("nameks2@naver.com"))
                 .title("제목1")
                 .content("내용1")
                 .build();

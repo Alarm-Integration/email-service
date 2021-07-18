@@ -13,7 +13,7 @@ class AlarmMessageDeserializerTest {
     private String title = "title";
     private String content = "content";
     private String traceId = "abc";
-    private List<String> raws = Arrays.asList("receiver@email.com");
+    private List<String> addresses = Arrays.asList("receiver@email.com");
 
     private AlarmMessageSerializer alarmMessageSerializer = new AlarmMessageSerializer();
     private AlarmMessageDeserializer alarmMessageDeserializer = new AlarmMessageDeserializer();
@@ -25,7 +25,7 @@ class AlarmMessageDeserializerTest {
                 .userId(userId)
                 .groupId(groupId)
                 .traceId(traceId)
-                .receivers(raws)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .build();

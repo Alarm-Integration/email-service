@@ -35,7 +35,7 @@ class AWSEmailSenderTest {
     private MemoryAppender memoryAppender;
 
     private String sender = "nameks17@gmail.com";
-    private List<String> receivers = Arrays.asList("nameks@naver.com");
+    private List<String> addresses = Arrays.asList("nameks@naver.com");
     private String title = "제목";
     private String content = "내용";
     private String traceId = "abc";
@@ -56,7 +56,7 @@ class AWSEmailSenderTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(receivers)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -78,7 +78,7 @@ class AWSEmailSenderTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender("notverified@email.com")
-                .receivers(receivers)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -99,11 +99,11 @@ class AWSEmailSenderTest {
     }
 
     @Test
-    void 메일_발송_실패_receivers_이메일_형식_아님() {
+    void 메일_발송_실패_addresses_이메일_형식_아님() {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(Arrays.asList("nameks@naver.com", "01012345678"))
+                .addresses(Arrays.asList("nameks@naver.com", "01012345678"))
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -124,11 +124,11 @@ class AWSEmailSenderTest {
     }
 
     @Test
-    void 메일_발송_실패_비어있는_receivers() {
+    void 메일_발송_실패_비어있는_addresses() {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(Arrays.asList())
+                .addresses(Arrays.asList())
                 .title(title)
                 .content(content)
                 .userId(userId)

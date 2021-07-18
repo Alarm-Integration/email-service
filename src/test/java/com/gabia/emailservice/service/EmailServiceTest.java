@@ -38,7 +38,7 @@ class EmailServiceTest {
     private MemoryAppender memoryAppender;
 
     private String sender = "nameks17@gmail.com";
-    private List<String> raws = Arrays.asList("nameks@naver.com");
+    private List<String> addresses = Arrays.asList("nameks@naver.com");
     private String title = "제목";
     private String content = "내용";
     private String traceId = "abc";
@@ -60,7 +60,7 @@ class EmailServiceTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(raws)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -69,7 +69,7 @@ class EmailServiceTest {
 
         AlarmMessage alarmMessage = AlarmMessage.builder()
                 .groupId(groupId)
-                .receivers(raws)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -92,7 +92,7 @@ class EmailServiceTest {
         //given
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
                 .sender(sender)
-                .receivers(raws)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
@@ -101,7 +101,7 @@ class EmailServiceTest {
 
         AlarmMessage alarmMessage = AlarmMessage.builder()
                 .groupId(groupId)
-                .receivers(raws)
+                .addresses(addresses)
                 .title(title)
                 .content(content)
                 .userId(userId)
