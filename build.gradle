@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'com.gabia'
@@ -18,13 +19,86 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2020.0.3")
+}
+
+jar {
+    enabled = false
+}
+
 dependencies {
+    //fluentd
+    implementation "org.komamitsu:fluency-core:2.6.0"
+    implementation "org.komamitsu:fluency-fluentd:2.6.0"
+
+    //swagger
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    //config
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //ASW SES SDK
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.847'
+
+    // Kafka, deserialize
+    implementation 'org.springframework.kafka:spring-kafka'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
+
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 test {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+        xml.destination file("$buildDir/jacoco/jacoco.xml")
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            // includes = []
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.7
+            }
+
+            excludes = ['com.gabia.emailservice.sender.CommonEmailSender',
+                        'com.gabia.emailservice.EmailServiceApplication',
+                        'com.gabia.emailservice.util.LogSender']
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
