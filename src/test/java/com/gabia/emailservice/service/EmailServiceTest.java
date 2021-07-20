@@ -20,14 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
-
-    @Mock
-    private LogSender logSender;
 
     @Mock
     private CommonEmailSender commonEmailSender;
@@ -53,72 +51,6 @@ class EmailServiceTest {
         logger.setLevel(Level.INFO);
         logger.addAppender(memoryAppender);
         memoryAppender.start();
-    }
-
-    @Test
-    void 메일_발송_성공() throws Exception {
-        //given
-        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                .sender(sender)
-                .addresses(addresses)
-                .title(title)
-                .content(content)
-                .userId(userId)
-                .traceId(traceId)
-                .build();
-
-        AlarmMessage alarmMessage = AlarmMessage.builder()
-                .groupId(groupId)
-                .addresses(addresses)
-                .title(title)
-                .content(content)
-                .userId(userId)
-                .traceId(traceId)
-                .build();
-
-        doNothing().when(commonEmailSender).sendEmail(sendEmailRequest);
-
-        //when
-        emailService.sendEmail(alarmMessage);
-
-        //then
-        assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("[%s: userId:%s traceId:%s] %s",
-                "EmailService", alarmMessage.getUserId(), alarmMessage.getTraceId(), "메일 발송 성공"), Level.INFO)).isTrue();
-    }
-
-    @Test
-    void 메일_발송_실패_인증하지_않은_발신자() throws Exception {
-        //given
-        SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                .sender(sender)
-                .addresses(addresses)
-                .title(title)
-                .content(content)
-                .userId(userId)
-                .traceId(traceId)
-                .build();
-
-        AlarmMessage alarmMessage = AlarmMessage.builder()
-                .groupId(groupId)
-                .addresses(addresses)
-                .title(title)
-                .content(content)
-                .userId(userId)
-                .traceId(traceId)
-                .build();
-
-        Exception exception = new Exception(String.format("errorCode: %s", "MessageRejected"));
-        willThrow(exception).given(commonEmailSender).sendEmail(sendEmailRequest);
-
-        //when
-        emailService.sendEmail(alarmMessage);
-
-        //then
-        assertThat(memoryAppender.getSize()).isEqualTo(1);
-        assertThat(memoryAppender.contains(String.format("[%s: userId:%s traceId:%s] %s",
-                "EmailService", alarmMessage.getUserId(), alarmMessage.getTraceId(),
-                String.format("errorCode: %s", "MessageRejected")), Level.ERROR)).isTrue();
     }
 
     @Test
