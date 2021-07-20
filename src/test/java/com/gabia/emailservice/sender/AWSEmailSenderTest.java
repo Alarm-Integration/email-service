@@ -6,6 +6,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
+import com.gabia.emailservice.util.LogSender;
 import com.gabia.emailservice.util.MemoryAppender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class AWSEmailSenderTest {
 
     @Mock
     private AmazonSimpleEmailService amazonSimpleEmailService;
+
+    @Mock
+    private LogSender logSender;
 
     @InjectMocks
     private AWSEmailSender amazonEmailSender;
@@ -84,18 +88,22 @@ class AWSEmailSenderTest {
                 .userId(userId)
                 .traceId(traceId)
                 .build();
+        String errorCode = "MessageRejected";
+        String errorMessage = "exception";
 
-        MessageRejectedException exception = new MessageRejectedException("exception");
-        exception.setErrorCode("MessageRejected");
+        MessageRejectedException exception = new MessageRejectedException(errorMessage);
+        exception.setErrorCode(errorCode);
 
         given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
                 .willThrow(exception);
 
         //when
-        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
+        amazonEmailSender.sendEmail(sendEmailRequest);
 
         //then
-        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("MessageRejected");
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s errorCode:%s message:%s",
+                "AWSEmailSender", userId, traceId, errorCode, errorMessage), Level.ERROR)).isTrue();
     }
 
     @Test
@@ -110,17 +118,22 @@ class AWSEmailSenderTest {
                 .traceId(traceId)
                 .build();
 
-        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException("exception");
-        exception.setErrorCode("InvalidParameterValue");
+        String errorCode = "InvalidParameterValue";
+        String errorMessage = "exception";
+
+        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException(errorMessage);
+        exception.setErrorCode(errorCode);
 
         given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
                 .willThrow(exception);
 
         //when
-        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
+        amazonEmailSender.sendEmail(sendEmailRequest);
 
         //then
-        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("InvalidParameterValue");
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s errorCode:%s message:%s",
+                "AWSEmailSender", userId, traceId, errorCode, errorMessage), Level.ERROR)).isTrue();
     }
 
     @Test
@@ -135,17 +148,22 @@ class AWSEmailSenderTest {
                 .traceId(traceId)
                 .build();
 
-        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException("exception");
-        exception.setErrorCode("ValidationError");
+        String errorCode = "ValidationError";
+        String errorMessage = "exception";
+
+        AmazonSimpleEmailServiceException exception = new AmazonSimpleEmailServiceException(errorMessage);
+        exception.setErrorCode(errorCode);
 
         given(amazonSimpleEmailService.sendEmail(sendEmailRequest.toAWSRequest()))
                 .willThrow(exception);
 
         //when
-        Throwable throwable = catchThrowable(() -> amazonEmailSender.sendEmail(sendEmailRequest));
+        amazonEmailSender.sendEmail(sendEmailRequest);
 
         //then
-        assertThat(throwable).isInstanceOf(Exception.class).hasMessageContaining("ValidationError");
+        assertThat(memoryAppender.getSize()).isEqualTo(1);
+        assertThat(memoryAppender.contains(String.format("%s: userId:%s traceId:%s errorCode:%s message:%s",
+                "AWSEmailSender", userId, traceId, errorCode, errorMessage), Level.ERROR)).isTrue();
     }
 
     @Test
