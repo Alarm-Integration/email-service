@@ -93,7 +93,8 @@ jacocoTestCoverageVerification {
 
             excludes = ['com.gabia.emailservice.sender.CommonEmailSender',
                         'com.gabia.emailservice.EmailServiceApplication',
-                        'com.gabia.emailservice.util.LogSender']
+                        'com.gabia.emailservice.util.LogSender',
+                        'com.gabia.emailservice.service.EmailService']
         }
     }
 }

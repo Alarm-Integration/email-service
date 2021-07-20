@@ -3,7 +3,7 @@ package com.gabia.emailservice.sender;
 import com.gabia.emailservice.dto.request.SendEmailRequest;
 
 public interface CommonEmailSender {
-    void sendEmail(SendEmailRequest sendEmailRequest) throws Exception;
+    boolean sendEmail(SendEmailRequest sendEmailRequest);
 
     default void sendVerifyEmail(String emailAddress) {
 
